@@ -94,7 +94,7 @@ export default function Dashboard() {
       // Skip header row if it exists
       const rows = data.monthlyData.slice(1)
       
-      rows.forEach(row => {
+      rows.forEach((row: any) => {
         const amount = parseFloat(row[0]?.toString().replace(/[^0-9.-]+/g,"")) || 0
         const type = row[2]?.toString().toLowerCase().trim()
         const category = row[4]?.toString().trim()

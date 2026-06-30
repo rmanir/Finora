@@ -67,7 +67,7 @@ export default function Expenses() {
 
     if (data && data.monthlyData.length > 0) {
       const rows = data.monthlyData.slice(1)
-      rows.forEach((row, index) => {
+      rows.forEach((row: any, index: number) => {
         const amountStr = row[0]?.toString() || ""
         const amount = parseFloat(amountStr.replace(/[^0-9.-]+/g, "")) || 0
         const date = row[1]?.toString() || ""

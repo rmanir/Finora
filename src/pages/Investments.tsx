@@ -29,7 +29,7 @@ export default function Investments() {
     let totalInvestments = 0
 
     if (data && data.categoryTotalData.length > 0) {
-      data.categoryTotalData.forEach(row => {
+      data.categoryTotalData.forEach((row: any) => {
         const category = row[0]?.toString()
         if (category === 'Investment') {
           const sum = row.slice(1).reduce((acc: number, val: any) => {
