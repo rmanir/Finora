@@ -83,7 +83,7 @@ export const useAllInvestments = () => {
       let goldInvestment = 0;
       let stockInvestment = 0;
 
-      allMonthsData.forEach(monthlyData => {
+      allMonthsData.forEach((monthlyData: any[]) => {
         if (!monthlyData) return;
         monthlyData.forEach((row: any[]) => {
           const category = row[4]?.toString().trim()

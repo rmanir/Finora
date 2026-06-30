@@ -19,7 +19,7 @@ export default function Savings() {
     if (data && data.categoryTotalData.length > 0) {
       // Example parsing for Category Total Sheet
       // Assuming Column A is Category, and we sum up the rest of the columns
-      data.categoryTotalData.forEach(row => {
+      data.categoryTotalData.forEach((row: any) => {
         const category = row[0]?.toString()
         if (category === 'Emergency Fund' || category === 'Investment') {
           // Sum columns B through Z for this category

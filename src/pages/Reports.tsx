@@ -35,7 +35,7 @@ export default function Reports() {
     let incomeCount = 1 // Default to 1 to avoid division by zero
 
     if (data && data.categoryTotalData.length > 0) {
-      data.categoryTotalData.forEach(row => {
+      data.categoryTotalData.forEach((row: any) => {
         const category = row[0]?.toString()
         if (category && category !== 'Income' && category !== 'Emergency Fund' && category !== 'Investment' && category !== 'Total') {
           const sum = row.slice(1).reduce((acc: number, val: any) => {
@@ -73,7 +73,7 @@ export default function Reports() {
     }
 
     const csvContent = data.monthlyData
-      .map(row => row.map(cell => `"${(cell || '').toString().replace(/"/g, '""')}"`).join(','))
+      .map((row: any[]) => row.map((cell: any) => `"${(cell || '').toString().replace(/"/g, '""')}"`).join(','))
       .join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
