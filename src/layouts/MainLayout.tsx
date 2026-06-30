@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Outlet, NavLink, useNavigate } from "react-router-dom"
+import { useQueryClient } from "@tanstack/react-query"
 import { 
   LayoutDashboard, 
   Receipt, 
@@ -8,7 +9,8 @@ import {
   BarChart3, 
   Settings,
   Menu,
-  LogOut
+  LogOut,
+  RefreshCw
 } from "lucide-react"
 
 import { ModeToggle } from "@/components/mode-toggle"
@@ -27,7 +29,15 @@ const navItems = [
 
 export function MainLayout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await queryClient.invalidateQueries();
+    setIsRefreshing(false);
+  };
 
   const handleLogout = () => {
     sessionStorage.removeItem('isAuthenticated');
@@ -73,6 +83,10 @@ export function MainLayout() {
             <span className="text-sm text-muted-foreground">Theme</span>
             <ModeToggle />
           </div>
+          <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={handleRefresh} disabled={isRefreshing}>
+            <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
+            {isRefreshing ? "Refreshing..." : "Refresh"}
+          </Button>
           <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={handleLogout}>
             <LogOut className="w-4 h-4 mr-2" />
             Logout
@@ -106,7 +120,15 @@ export function MainLayout() {
                   <span className="text-xl font-bold tracking-tight">Finora</span>
                 </div>
                 <NavLinks onClick={() => setIsMobileMenuOpen(false)} />
-                <div className="mt-8">
+                <div className="mt-8 flex flex-col space-y-4">
+                  <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={() => {
+                    if (!isRefreshing) {
+                      handleRefresh();
+                    }
+                  }} disabled={isRefreshing}>
+                    <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
+                    {isRefreshing ? "Refreshing..." : "Refresh"}
+                  </Button>
                   <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={() => {
                     setIsMobileMenuOpen(false);
                     handleLogout();
