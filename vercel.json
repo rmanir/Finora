@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/(login|expenses|investments|savings|reports|settings)(/.*)?",
+      "destination": "/index.html"
+    }
+  ]
+}
