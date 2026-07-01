@@ -1,37 +1,42 @@
-import { Moon, Sun } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Monitor, Moon, Sun } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
+import { cn } from "@/lib/utils"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center space-x-1 rounded-full border bg-muted/30 p-1 w-fit shadow-sm">
+      <button
+        onClick={() => setTheme("system")}
+        className={cn(
+          "flex items-center justify-center rounded-full p-2.5 transition-all duration-300",
+          theme === "system" ? "bg-background shadow-md scale-100 text-foreground" : "text-muted-foreground hover:text-foreground scale-95 hover:bg-muted"
+        )}
+      >
+        <Monitor className="h-4 w-4" />
+        <span className="sr-only">System</span>
+      </button>
+      <button
+        onClick={() => setTheme("dark")}
+        className={cn(
+          "flex items-center justify-center rounded-full p-2.5 transition-all duration-300",
+          theme === "dark" ? "bg-background shadow-md scale-100 text-foreground" : "text-muted-foreground hover:text-foreground scale-95 hover:bg-muted"
+        )}
+      >
+        <Moon className="h-4 w-4" />
+        <span className="sr-only">Dark</span>
+      </button>
+      <button
+        onClick={() => setTheme("light")}
+        className={cn(
+          "flex items-center justify-center rounded-full p-2.5 transition-all duration-300",
+          theme === "light" ? "bg-background shadow-md scale-100 text-foreground" : "text-muted-foreground hover:text-foreground scale-95 hover:bg-muted"
+        )}
+      >
+        <Sun className="h-4 w-4" />
+        <span className="sr-only">Light</span>
+      </button>
+    </div>
   )
 }

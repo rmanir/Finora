@@ -8,8 +8,8 @@ type SettingsProviderState = {
 }
 
 const initialState: SettingsProviderState = {
-  monthlySavingsGoal: 2000,
-  emergencyFundGoal: 30000,
+  monthlySavingsGoal: 20000,
+  emergencyFundGoal: 300000,
   setMonthlySavingsGoal: () => null,
   setEmergencyFundGoal: () => null,
 }
@@ -21,8 +21,8 @@ export function SettingsProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [monthlySavingsGoal, setMonthlySavingsGoal] = useState<number>(2000)
-  const [emergencyFundGoal, setEmergencyFundGoal] = useState<number>(30000)
+  const [monthlySavingsGoal, setMonthlySavingsGoal] = useState<number>(20000)
+  const [emergencyFundGoal, setEmergencyFundGoal] = useState<number>(300000)
 
   useEffect(() => {
     const storedMonthly = localStorage.getItem("finora_monthly_savings_goal")

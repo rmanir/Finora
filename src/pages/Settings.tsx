@@ -45,9 +45,9 @@ export default function Settings() {
                 <SelectValue placeholder="Select currency" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="usd">USD ($)</SelectItem>
-                <SelectItem value="eur">EUR (€)</SelectItem>
-                <SelectItem value="gbp">GBP (£)</SelectItem>
+                <SelectItem value="usd" disabled>USD ($)</SelectItem>
+                <SelectItem value="eur" disabled>EUR (€)</SelectItem>
+                <SelectItem value="gbp" disabled>GBP (£)</SelectItem>
                 <SelectItem value="inr">INR (₹)</SelectItem>
               </SelectContent>
             </Select>

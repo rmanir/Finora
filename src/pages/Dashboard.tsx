@@ -4,11 +4,6 @@ import {
   Legend, 
   Pie, 
   PieChart, 
-  Bar,
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
   ResponsiveContainer, 
   Tooltip 
 } from "recharts"
@@ -31,6 +26,7 @@ export default function Dashboard() {
 
   const [selectedMonth, setSelectedMonth] = useState(() => localStorage.getItem('finora_month') || "August")
   const [selectedYear, setSelectedYear] = useState(() => localStorage.getItem('finora_year') || "2025")
+  const [activePieIndex, setActivePieIndex] = useState<number | undefined>(undefined)
 
   useEffect(() => {
     localStorage.setItem('finora_month', selectedMonth)
@@ -211,39 +207,9 @@ export default function Dashboard() {
           </div>
 
           {/* Charts Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-6">
-            {/* Income vs Expense Bar Chart */}
-            <Card className="col-span-full lg:col-span-4 bg-background/40 backdrop-blur-xl border-primary/10 shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardHeader>
-                <CardTitle>Income vs Expense</CardTitle>
-                <CardDescription>
-                  Comparison for {selectedMonth} {selectedYear}.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="h-[450px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={[
-                    { name: 'Summary', Income: parsedData.monthlyIncome, Expense: parsedData.monthlyExpense }
-                  ]} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
-                    <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                    <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={(val) => `$${val}`} />
-                    <Tooltip 
-                      cursor={{ fill: 'hsl(var(--muted)/0.3)' }}
-                      contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                      itemStyle={{ color: 'hsl(var(--foreground))' }}
-                      formatter={(value: any) => [formatCurrency(value as number), undefined]}
-                    />
-                    <Legend />
-                    <Bar dataKey="Income" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={80} />
-                    <Bar dataKey="Expense" fill="#f43f5e" radius={[6, 6, 0, 0]} maxBarSize={80} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
+          <div className="mt-6">
             {/* Expense Breakdown Donut Chart */}
-            <Card className="col-span-full lg:col-span-3 bg-background/40 backdrop-blur-xl border-primary/10 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="bg-background/40 backdrop-blur-xl border-primary/10 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <CardTitle>Expense Breakdown</CardTitle>
                 <CardDescription>
@@ -265,15 +231,27 @@ export default function Dashboard() {
                         stroke="none"
                       >
                         {parsedData.expenseBreakdown.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-80 transition-opacity" />
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={entry.fill} 
+                            opacity={activePieIndex === undefined || activePieIndex === index ? 1 : 0.3}
+                            className="transition-opacity" 
+                          />
                         ))}
                       </Pie>
                       <Tooltip 
                         contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                         itemStyle={{ color: 'hsl(var(--foreground))' }}
-                        formatter={(value: any) => [formatCurrency(value as number), undefined]}
+                        formatter={(value: any, name: any) => [formatCurrency(value as number), name]}
                       />
-                      <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: "10px" }} />
+                      <Legend 
+                        verticalAlign="bottom" 
+                        wrapperStyle={{ paddingTop: "10px", cursor: "pointer" }} 
+                        onClick={(e: any) => {
+                          const index = parsedData.expenseBreakdown.findIndex(item => item.name === e.value);
+                          setActivePieIndex(activePieIndex === index ? undefined : index);
+                        }}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (

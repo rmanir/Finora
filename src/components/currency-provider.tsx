@@ -17,10 +17,10 @@ type CurrencyProviderState = {
 }
 
 const initialState: CurrencyProviderState = {
-  currency: "usd",
-  symbol: "$",
+  currency: "inr",
+  symbol: "₹",
   setCurrency: () => null,
-  formatCurrency: (val: number) => `$${val.toLocaleString()}`,
+  formatCurrency: (val: number) => `₹${val.toLocaleString()}`,
 }
 
 const CurrencyProviderContext = createContext<CurrencyProviderState>(initialState)
@@ -30,7 +30,7 @@ export function CurrencyProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [currency, setCurrencyState] = useState<Currency>("usd")
+  const [currency, setCurrencyState] = useState<Currency>("inr")
 
   useEffect(() => {
     const stored = localStorage.getItem("finora_currency") as Currency

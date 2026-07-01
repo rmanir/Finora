@@ -71,18 +71,18 @@ export function MainLayout() {
     <div className="min-h-screen bg-background flex">
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 border-r bg-card px-4 py-6 sticky top-0 h-screen">
-        <div className="flex items-center space-x-2 px-2 mb-8">
+        <div 
+          className="flex items-center space-x-2 px-2 mb-8 cursor-pointer group"
+          onClick={() => navigate('/')}
+        >
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-xl">F</span>
           </div>
-          <span className="text-xl font-bold tracking-tight">Finora</span>
+          <span className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors">Finora</span>
         </div>
         <NavLinks />
         <div className="mt-auto px-4 py-4 border-t flex flex-col space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Theme</span>
-            <ModeToggle />
-          </div>
+          {/* Theme toggle moved to top right */}
           <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={handleRefresh} disabled={isRefreshing}>
             <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
             {isRefreshing ? "Refreshing..." : "Refresh"}
@@ -98,11 +98,14 @@ export function MainLayout() {
       <main className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header */}
         <header className="md:hidden flex items-center justify-between px-4 py-4 border-b bg-card sticky top-0 z-10">
-          <div className="flex items-center space-x-2">
+          <div 
+            className="flex items-center space-x-2 cursor-pointer group"
+            onClick={() => navigate('/')}
+          >
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xl">F</span>
             </div>
-            <span className="text-xl font-bold tracking-tight">Finora</span>
+            <span className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors">Finora</span>
           </div>
           <div className="flex items-center space-x-2">
             <ModeToggle />
@@ -113,11 +116,17 @@ export function MainLayout() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[280px] p-6">
-                <div className="flex items-center space-x-2 mb-8">
+                <div 
+                  className="flex items-center space-x-2 mb-8 cursor-pointer group"
+                  onClick={() => {
+                    navigate('/');
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
                   <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                     <span className="text-primary-foreground font-bold text-xl">F</span>
                   </div>
-                  <span className="text-xl font-bold tracking-tight">Finora</span>
+                  <span className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors">Finora</span>
                 </div>
                 <NavLinks onClick={() => setIsMobileMenuOpen(false)} />
                 <div className="mt-8 flex flex-col space-y-4">
@@ -144,7 +153,10 @@ export function MainLayout() {
 
         {/* Page Content */}
         <div className="flex-1 p-6 lg:p-8 overflow-auto">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto flex flex-col min-h-full">
+            <div className="hidden md:flex justify-end mb-2">
+              <ModeToggle />
+            </div>
             <Outlet />
           </div>
         </div>
